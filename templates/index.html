@@ -1,0 +1,95 @@
+<!-- File: templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Regression Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            width: 200px;
+        }
+        input {
+            width: 100px;
+            padding: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .plots {
+            margin-top: 20px;
+        }
+        .plot {
+            margin-bottom: 20px;
+        }
+        .results {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Linear Regression Parameter Explorer</h1>
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="N">Sample size (N):</label>
+            <input type="number" id="N" name="N" value="30" min="10" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="mu">Mean (μ):</label>
+            <input type="number" id="mu" name="mu" value="0" step="0.1" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="sigma2">Variance (σ²):</label>
+            <input type="number" id="sigma2" name="sigma2" value="1" step="0.1" min="0.1" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="S">Number of simulations (S):</label>
+            <input type="number" id="S" name="S" value="1000" min="100" required>
+        </div>
+        
+        <button type="submit">Generate Plots</button>
+    </form>
+
+    {% if plot1 %}
+    <div class="plots">
+        <div class="plot">
+            <h2>Generated Plot</h2>
+            <img src="{{ url_for('static', filename='plot1.png') }}" alt="Scatter plot with regression line">
+        </div>
+        
+        <div class="plot">
+            <h2>Histogram of Slopes and Intercepts</h2>
+            <img src="{{ url_for('static', filename='plot2.png') }}" alt="Histogram of slopes and intercepts">
+        </div>
+        
+        <div class="results">
+            <p>Proportion of slopes more extreme than calculated slope: {{ "%.2f"|format(slope_extreme) }}</p>
+            <p>Proportion of intercepts more extreme than calculated intercept: {{ "%.2f"|format(intercept_extreme) }}</p>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>
